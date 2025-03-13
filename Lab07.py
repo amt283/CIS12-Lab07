@@ -1,16 +1,45 @@
+import sys
+from sys import exit
+
 def main():
     alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     key = 'YIPPEE'
-    message = 'They mostly come at night. Mostly.'
+    # message = 'They mostly come at night. Mostly.'
+    encrypted_list = []
 
-    #vigenere_header(alphabet)
-    #vigenere_sq_print(vigenere_sq(alphabet))
-    #print(letter_to_index('c', alphabet))
-    # print(index_to_letter(letter_to_index('c', alphabet),alphabet))
-    #print(vigenere_index('b','b', alphabet))
-    print(encrypt_vigenere(key, message, alphabet))
-    ciphertext = encrypt_vigenere(key, message, alphabet)
-    print(decrypt_vigenere(key, ciphertext, alphabet))
+    menu = [
+        ['1) Encrypt', enc_menu, [key, alphabet, encrypted_list]],
+        ['2) Decrypt', dec_menu, [key, alphabet, encrypted_list]],
+        ['3) Dump Decrypt', dump_dec, [encrypted_list]],
+        ['4) Quit', exit, [0]]
+    ]
+
+    while True:
+        print("-"*80)
+        for menu_item in menu:
+            print(menu_item[0])
+        try:
+            choice = int(input("Make your choice: "))
+            if not (0 < choice <= len(menu)):
+                print("Improper choice!")
+            else:
+                menu[choice-1][1](*menu[choice-1][2])
+        except TypeError:
+            print("Improper choice! Ints only")
+        except ValueError:
+            print("Improper choice! Ints only")
+
+def enc_menu(key, alphabet, encrypted_list):
+    plaintext = input("Enter text to encrypt: ")
+    encrypted_list.append(encrypt_vigenere(key, plaintext, alphabet))
+
+def dec_menu(key, alphabet, encrypted_list):
+    for ciphertext in encrypted_list:
+        print(decrypt_vigenere(key, ciphertext, alphabet))
+
+def dump_dec(encrypted_list):
+    for ciphertext in encrypted_list:
+        print(ciphertext)
 
 def vigenere_header(alphabet):
     return list(' ') + list(alphabet)
